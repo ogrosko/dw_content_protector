@@ -99,6 +99,9 @@ class ContentProtector
             $record['tx_flux_column'] = $txFluxColumn;
         }
 
+        //Resolve pid if pid < 0
+        $record['pid'] = $this->dataHandler->resolvePid(self::CONTENT_TABLE_NAME, $record['pid']);
+
         if ($this->isElementDenied($record)) {
             $this->objectManager
                 ->get(FlashMessageService::class)
@@ -139,6 +142,8 @@ class ContentProtector
         } else {
             $page = BackendUtility::getRecord('pages', $record['pid']);
             $provider = $this->providerResolver->resolvePrimaryConfigurationProvider('pages', null, $page);
+            \var_dump($record);
+            \var_dump($page);
             foreach ($provider->getGrid($page)->getRows() as $row) {
                 foreach ($row->getColumns() as $column) {
                     if ($column->getColumnPosition() === $colPos) {
