@@ -106,7 +106,11 @@ class ContentProtector
      */
     public function canBeElementUpdated($id, $dataToUpdate = [])
     {
-        $record = BackendUtility::getRecord(self::CONTENT_TABLE_NAME, $id);
+        if (MathUtility::canBeInterpretedAsInteger($id)) {
+            $record = BackendUtility::getRecord(self::CONTENT_TABLE_NAME, $id);
+        } else {
+            $record = $dataToUpdate;
+        }
         $record = \array_merge($record, $dataToUpdate);
 
         if ((int)$record['colPos'] > ContentService::COLPOS_FLUXCONTENT) {
