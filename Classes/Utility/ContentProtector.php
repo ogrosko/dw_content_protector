@@ -130,7 +130,8 @@ class ContentProtector
                     new FlashMessage(
                         "Move or copy of element tt_content:{$record['uid']} here is not allowed",
                         'Not allowed',
-                        FlashMessage::ERROR
+                        FlashMessage::ERROR,
+                        true
                     )
                 );
             return false;
