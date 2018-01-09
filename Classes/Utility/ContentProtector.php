@@ -61,11 +61,36 @@ class ContentProtector
     public function checkDataContentElements()
     {
         if ($this->dataHandler->datamap[self::CONTENT_TABLE_NAME]) {
-            foreach ($this->dataHandler->datamap[self::CONTENT_TABLE_NAME] as $id => $record) {
+            foreach ($this->dataHandler->datamap[self::CONTENT_TABLE_NAME] as $id => $data) {
                 if (!$id) {
                     continue;
                 }
-                $this->getRecordUpdateAccess(self::CONTENT_TABLE_NAME, $id, $record);
+                if (!$this->canBeElementUpdated($id, $data)) {
+                    unset($this->dataHandler->datamap[self::CONTENT_TABLE_NAME][$id]);
+                    unset($this->dataHandler->cmdmap[self::CONTENT_TABLE_NAME][$id]);
+                }
+            }
+        }
+    }
+
+    public function checkCmdContentElements()
+    {
+        if ($this->dataHandler->cmdmap[self::CONTENT_TABLE_NAME]) {
+            foreach ($this->dataHandler->cmdmap[self::CONTENT_TABLE_NAME] as $id => $command) {
+                if (!$id) {
+                    continue;
+                }
+                $data = [];
+                $cmd = \key($command);
+                if (isset($command[$cmd]['update'])) {
+                    $data = $command[$cmd]['update'];
+                }
+                if (isset($command[$cmd]['target'])) {
+                    $data['pid'] = $command[$cmd]['target'];
+                }
+                if (!$this->canBeElementUpdated($id, $data)) {
+                    unset($this->dataHandler->cmdmap[self::CONTENT_TABLE_NAME][$id]);
+                }
             }
         }
     }
@@ -79,18 +104,10 @@ class ContentProtector
      * @param mixed $otherHookGrantedAccess
      * @return bool Returns TRUE if the user may update the record given by $table and $id
      */
-    public function getRecordUpdateAccess($table, $id, $data, $otherHookGrantedAccess = null)
+    public function canBeElementUpdated($id, $dataToUpdate = [])
     {
-        if ($table !== self::CONTENT_TABLE_NAME or !isset($data['colPos'])) {
-            return $otherHookGrantedAccess;
-        }
-
-        if (MathUtility::canBeInterpretedAsInteger($id)) {
-            $recordBackup = BackendUtility::getRecord($table, $id);
-        } else {
-            $recordBackup = $data;
-        }
-        $record = \array_merge($recordBackup, $data);
+        $record = BackendUtility::getRecord(self::CONTENT_TABLE_NAME, $id);
+        $record = \array_merge($record, $dataToUpdate);
 
         if ((int)$record['colPos'] > ContentService::COLPOS_FLUXCONTENT) {
             list($txFluxParent, $txFluxColumn) = $this->contentService->getTargetAreaStoredInSession($record['colPos']);
@@ -112,13 +129,10 @@ class ContentProtector
                         FlashMessage::ERROR
                     )
                 );
-
-            unset($this->dataHandler->cmdmap[$table][$id]);
-            unset($this->dataHandler->datamap[$table][$id]);
             return false;
         }
 
-        return $otherHookGrantedAccess;
+        return true;
     }
 
     /**
@@ -142,8 +156,6 @@ class ContentProtector
         } else {
             $page = BackendUtility::getRecord('pages', $record['pid']);
             $provider = $this->providerResolver->resolvePrimaryConfigurationProvider('pages', null, $page);
-            \var_dump($record);
-            \var_dump($page);
             foreach ($provider->getGrid($page)->getRows() as $row) {
                 foreach ($row->getColumns() as $column) {
                     if ($column->getColumnPosition() === $colPos) {
