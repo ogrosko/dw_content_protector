@@ -1,6 +1,17 @@
 <?php
 namespace Digitalwerk\DwContentProtector\Utility;
 
+/***
+ *
+ * This file is part of the "Boilerplate" Extension for TYPO3 CMS.
+ *
+ * For the full copyright and license information, please read the
+ * LICENSE.txt file that was distributed with this source code.
+ *
+ *  (c) 2017 Ondrej Grosko <ondrej@digitalwerk.agency>, Digitalwerk
+ *
+ ***/
+
 use TYPO3\CMS\Core\DataHandling\DataHandler;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Extbase\Object\ObjectManager;
@@ -58,6 +69,9 @@ class ContentProtector
         $this->providerResolver = $this->objectManager->get(ProviderResolver::class);
     }
 
+    /**
+     * DataHandler datamap check
+     */
     public function checkDataContentElements()
     {
         if ($this->dataHandler->datamap[self::CONTENT_TABLE_NAME]) {
@@ -73,6 +87,9 @@ class ContentProtector
         }
     }
 
+    /**
+     * DataHandler cmdmap check
+     */
     public function checkCmdContentElements()
     {
         if ($this->dataHandler->cmdmap[self::CONTENT_TABLE_NAME]) {

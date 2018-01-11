@@ -1,6 +1,17 @@
 <?php
 namespace Digitalwerk\DwContentProtector\Hooks;
 
+/***
+ *
+ * This file is part of the "Boilerplate" Extension for TYPO3 CMS.
+ *
+ * For the full copyright and license information, please read the
+ * LICENSE.txt file that was distributed with this source code.
+ *
+ *  (c) 2017 Ondrej Grosko <ondrej@digitalwerk.agency>, Digitalwerk
+ *
+ ***/
+
 /**
  * Class TCEmainHook
  * @package Digitalwerk\DwContentProtector\Hooks
