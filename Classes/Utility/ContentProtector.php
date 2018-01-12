@@ -177,7 +177,7 @@ class ContentProtector
             }
         } else {
             $page = BackendUtility::getRecord('pages', $record['pid']);
-            $provider = $this->providerResolver->resolvePrimaryConfigurationProvider('pages', null, $page);
+            $provider = $this->providerResolver->resolvePrimaryConfigurationProvider('pages', 'tx_fed_page_flexform', $page);
             foreach ($provider->getGrid($page)->getRows() as $row) {
                 foreach ($row->getColumns() as $column) {
                     if ($column->getColumnPosition() === $colPos) {
