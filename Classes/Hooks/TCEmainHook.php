@@ -13,13 +13,14 @@ namespace Digitalwerk\DwContentProtector\Hooks;
  ***/
 
 /**
- * Class TCEmainHook
- * @package Digitalwerk\DwContentProtector\Hooks
+ * TYPO3 TCE hook class used for DataHandler hooks
  */
 class TCEmainHook
 {
 
     /**
+     * Pre-process DataHandler data before processing starts
+     *
      * @param \TYPO3\CMS\Core\DataHandling\DataHandler $dataHandler
      */
     public function processDatamap_beforeStart(\TYPO3\CMS\Core\DataHandling\DataHandler $dataHandler)
@@ -34,6 +35,8 @@ class TCEmainHook
     }
 
     /**
+     * Pre-process Datahandler cmd before processing starts
+     *
      * @param \TYPO3\CMS\Core\DataHandling\DataHandler $dataHandler
      */
     public function processCmdmap_beforeStart(\TYPO3\CMS\Core\DataHandling\DataHandler $dataHandler)

@@ -23,8 +23,7 @@ use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Utility\MathUtility;
 
 /**
- * Class ContentProtector
- * @package Digitalwerk\DwContentProtector\Utility
+ * Content protector protects content elements to be moved/copied to disallowed Page/Grid columns
  */
 class ContentProtector
 {
@@ -39,21 +38,29 @@ class ContentProtector
     const FLUID_CONTENT_CTYPE = 'fluidcontent_content';
 
     /**
+     * DataHandler
+     *
      * @var DataHandler
      */
     protected $dataHandler= null;
 
     /**
+     * ObjectManager
+     *
      * @var ObjectManager
      */
     protected $objectManager = null;
 
     /**
+     * ContentService
+     *
      * @var null
      */
     protected $contentService = null;
 
     /**
+     * ProviderResolver
+     *
      * @var ProviderResolver
      */
     protected $providerResolver = null;
@@ -158,6 +165,8 @@ class ContentProtector
     }
 
     /**
+     * Check if element is denied
+     *
      * @param array $record
      * @return bool
      */
@@ -207,6 +216,8 @@ class ContentProtector
     }
 
     /**
+     * Get BlackList and WhileList
+     *
      * @param array $variables
      * @return array
      */
@@ -227,6 +238,7 @@ class ContentProtector
     }
 
     /**
+     * Check if $record is Fluid content type
      * @param array $record
      * @return bool
      */
