@@ -6,4 +6,4 @@ Protects [flux](https://fluidtypo3.org/) content elements to be created/moved/co
 
 Installation by composer:
 
-`composer require composer require ogrosko/dw-content-protector`
+`composer require ogrosko/dw-content-protector`
